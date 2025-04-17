@@ -155,7 +155,8 @@ public sealed partial class TestPair : IAsyncDisposable
             Assert.That(gameTicker.DummyTicker, Is.False);
             Server.CfgMan.SetCVar(CCVars.GameLobbyEnabled, true);
             await Server.WaitPost(() => gameTicker.RestartRound());
-            await RunTicksSync(1);
+            await RunTicksSync(10);
+            await ReallyBeIdle();
         }
 
         //Apply Cvars
@@ -168,7 +169,8 @@ public sealed partial class TestPair : IAsyncDisposable
         await testOut.WriteLineAsync($"Recycling: {Watch.Elapsed.TotalMilliseconds} ms: Restarting server again");
         await Server.WaitPost(() => Server.EntMan.FlushEntities());
         await Server.WaitPost(() => gameTicker.RestartRound());
-        await RunTicksSync(1);
+        await RunTicksSync(10);
+        await ReallyBeIdle();
 
         // Connect client
         if (settings.ShouldBeConnected)
